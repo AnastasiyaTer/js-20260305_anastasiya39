@@ -6,23 +6,10 @@
  */
 export function sortStrings(arr, param = 'asc') {
   const newArr = [...arr];
+  const direction = param === 'asc' ? 1 : -1;
 
   newArr.sort((a, b) => {
-    const result = a.toLowerCase().localeCompare(b.toLowerCase(), ['ru', 'en']);
-
-    if (result !== 0) {
-      return param === 'asc' ? result : -result;
-    }
-    
-    if (a[0] === a[0].toUpperCase()) {
-      return -1;
-    }
-
-    if (b[0] === b[0].toUpperCase()) {
-      return 1;
-    }
-
-    return 0;
+    return a.localeCompare(b, ['ru', 'en'], {caseFirst: 'upper'}) * direction;
   });
 
   return newArr;

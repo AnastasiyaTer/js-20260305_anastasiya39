@@ -11,18 +11,21 @@ export function trimSymbols(string, size) {
   if (size === undefined) {
     return string;
   }
+
+  let result = [];
+  let prevChar = '';
   let count = 0;
-  return string.split('').reduce((acc, char) => {
-    if (char === acc[acc.length - 1]) {
+  
+  for (let char of string) {
+    if (char === prevChar) {
       count++;
     } else {
+      prevChar = char;
       count = 1;
     }
-
     if (count <= size) {
-      acc.push(char);
+      result.push(char);
     }
-    
-    return acc;
-  }, []).join('');
+  }
+  return result.join('');
 }

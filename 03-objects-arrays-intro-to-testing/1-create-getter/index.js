@@ -11,7 +11,7 @@ export function createGetter(path) {
       if (acc && Object.hasOwn(acc, key)) {
         return acc[key];
       }
-      return undefined;
+      return;
     }, obj);
   };
 }

@@ -5,7 +5,7 @@
  */
 export function invertObj(obj) {
   if (!obj || typeof obj !== 'object') {
-    return undefined;
+    return;
   }
 
   return Object.entries(obj).reduce((acc, [key, value]) => {

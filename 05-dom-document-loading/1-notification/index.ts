@@ -6,7 +6,7 @@ interface Options {
 }
 
 export default class NotificationMessage {
-  static activeNotification: NotificationMessage;
+  static activeNotification: NotificationMessage | null = null;
   element: HTMLElement | null = null;
   private timerId?: number;
   private message: string;
@@ -67,7 +67,7 @@ export default class NotificationMessage {
     }
 
     if (NotificationMessage.activeNotification === this) {
-      NotificationMessage.activeNotification = undefined!;
+      NotificationMessage.activeNotification = null;
     }
   }
 

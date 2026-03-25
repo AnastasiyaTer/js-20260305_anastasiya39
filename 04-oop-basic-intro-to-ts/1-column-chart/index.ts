@@ -10,6 +10,7 @@ interface Options {
 
 export default class ColumnChart {
   element: HTMLElement | null = null; 
+  bodyElement: HTMLElement | null = null;
   chartHeight = 50;
   private data: number[];
   private label: string;
@@ -57,6 +58,7 @@ export default class ColumnChart {
       throw new Error('Error rendering');
     }
     this.element = elem as HTMLElement;
+    this.bodyElement = this.element.querySelector('[data-element="body"]');
 
     if (!this.data.length) {
       this.element.classList.add('column-chart_loading');
@@ -83,9 +85,8 @@ export default class ColumnChart {
 
     if (!this.element) return;
 
-    const body: HTMLElement | null = this.element.querySelector('[data-element="body"]');
-    if (body) {
-      body.innerHTML = this.getColumnBody();
+    if (this.bodyElement) {
+      this.bodyElement.innerHTML = this.getColumnBody();
     }
 
     if (!this.data.length) {

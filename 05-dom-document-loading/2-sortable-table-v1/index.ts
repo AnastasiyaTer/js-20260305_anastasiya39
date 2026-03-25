@@ -22,31 +22,32 @@ export default class SortableTable {
   }
 
   private render() {
-    this.element = document.createElement('div');
-    this.element.classList.add('sortable-table');
+    const html = `
+      <div class="sortable-table">
+        <div data-element="header" class="sortable-table__header sortable-table__row">
+          ${this.headers.map(header => `
+            <div class="sortable-table__cell"
+                data-id="${header.id}"
+                data-sortable="${header.sortable ? 'true' : 'false'}">
+              <span>${header.title}</span>
+              ${header.sortable ? `
+                <span data-element="arrow" class="sortable-table__sort-arrow">
+                  <span class="sort-arrow"></span>
+                </span>` : ''}
+            </div>
+          `).join('')}
+        </div>
 
-    const headerHtml = this.headers.map(header => `
-      <div class="sortable-table__cell"
-           data-id="${header.id}"
-           data-sortable="${header.sortable ? 'true' : 'false'}">
-        <span>${header.title}</span>
-        ${header.sortable ? `<span data-element="arrow" class="sortable-table__sort-arrow">
-          <span class="sort-arrow"></span>
-        </span>` : ''}
+        <div data-element="body" class="sortable-table__body">
+          ${this.getTableBody(this.data)}
+        </div>
       </div>
-    `).join('');
+    `;
 
-    const headerContainer = document.createElement('div');
-    headerContainer.dataset.element = 'header';
-    headerContainer.classList.add('sortable-table__header', 'sortable-table__row');
-    headerContainer.innerHTML = headerHtml;
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = html;
 
-    const bodyContainer = document.createElement('div');
-    bodyContainer.dataset.element = 'body';
-    bodyContainer.classList.add('sortable-table__body');
-    bodyContainer.innerHTML = this.getTableBody(this.data);
-
-    this.element.append(headerContainer, bodyContainer);
+    this.element = wrapper.firstElementChild as HTMLElement;
   }
 
   private getTableBody(data: SortableTableData[]) {
@@ -83,7 +84,7 @@ export default class SortableTable {
     });
 
     if (!this.element) return;
-    
+
     this.element.querySelectorAll<HTMLElement>('.sortable-table__cell').forEach(cell => {
       if (cell.dataset.id === field) cell.dataset.order = order;
       else delete cell.dataset.order;
